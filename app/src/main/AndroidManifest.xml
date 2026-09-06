@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".item_semester"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+        android:name=".ui.SemesterDetailActivity"
+        android:exported="false"
+        android:parentActivityName="MainActivity" />
     </application>
 
 </manifest>

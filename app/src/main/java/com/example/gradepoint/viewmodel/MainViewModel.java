@@ -39,4 +39,15 @@ public class MainViewModel extends AndroidViewModel {
     public void deleteSemester(Semester semester) {
         repository.deleteSemester(semester);
     }
+    public LiveData<List<Subject>> getSubjectsForSemester(long semesterId) {
+        return repository.getSubjectsForSemester(semesterId);
+    }
+
+    public void insertSubject(Subject subject) {
+        repository.insertSubject(subject);
+    }
+
+    public void deleteSubject(Subject subject) {
+        repository.deleteSubject(subject);
+    }
 }
