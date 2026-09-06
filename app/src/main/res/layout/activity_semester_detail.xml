@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="Semester Details" />
+            app:navigationIconTint="?attr/colorOnSurface"
+            app:title="Semester Details"
+            app:titleTextColor="@color/on_surface" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

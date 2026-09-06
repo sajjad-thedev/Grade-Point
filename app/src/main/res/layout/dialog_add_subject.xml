@@ -39,18 +39,20 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Material Dropdown for Letter Grade -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Grade Points (e.g., 4.0)">
+        android:hint="Select Grade">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etGradePoints"
+        <AutoCompleteTextView
+            android:id="@+id/actGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:maxLines="1" />
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold"
+            android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

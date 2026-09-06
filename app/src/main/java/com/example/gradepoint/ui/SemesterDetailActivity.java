@@ -110,33 +110,57 @@ public class SemesterDetailActivity extends AppCompatActivity implements Subject
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_add_subject, null);
         final EditText etSubjectName = viewInflated.findViewById(R.id.etSubjectName);
         final EditText etCreditHours = viewInflated.findViewById(R.id.etCreditHours);
-        final EditText etGradePoints = viewInflated.findViewById(R.id.etGradePoints);
+        final android.widget.AutoCompleteTextView actGrade = viewInflated.findViewById(R.id.actGrade);
+
+        // Define standard university letter grades
+        String[] grades = new String[]{"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"};
+        android.widget.ArrayAdapter<String> gradeAdapter = new android.widget.ArrayAdapter<>(
+                this, R.layout.item_dropdown_grade, grades
+        );
+        actGrade.setAdapter(gradeAdapter);
 
         builder.setView(viewInflated);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
             String name = etSubjectName.getText().toString().trim();
             String creditsStr = etCreditHours.getText().toString().trim();
-            String gradePointsStr = etGradePoints.getText().toString().trim();
+            String selectedGrade = actGrade.getText().toString().trim();
 
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(creditsStr) || TextUtils.isEmpty(gradePointsStr)) {
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(creditsStr) || TextUtils.isEmpty(selectedGrade)) {
                 Toast.makeText(SemesterDetailActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             try {
                 int creditHours = Integer.parseInt(creditsStr);
-                double gradePoints = Double.parseDouble(gradePointsStr);
+                double gradePoints = convertGradeToPoints(selectedGrade);
 
                 Subject newSubject = new Subject(semesterId, name, creditHours, gradePoints);
                 mainViewModel.insertSubject(newSubject);
             } catch (NumberFormatException e) {
-                Toast.makeText(SemesterDetailActivity.this, "Invalid credit hours or grade points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SemesterDetailActivity.this, "Invalid credit hours", Toast.LENGTH_SHORT).show();
             }
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
+    }
+
+    // Utility method to convert Letter Grades to Grade Points
+    private double convertGradeToPoints(String grade) {
+        switch (grade.toUpperCase()) {
+            case "A":  return 4.0;
+            case "A-": return 3.7;
+            case "B+": return 3.3;
+            case "B":  return 3.0;
+            case "B-": return 2.7;
+            case "C+": return 2.3;
+            case "C":  return 2.0;
+            case "C-": return 1.7;
+            case "D":  return 1.0;
+            case "F":
+            default:   return 0.0;
+        }
     }
 
     private void calculateSemesterGpa(List<Subject> subjects) {

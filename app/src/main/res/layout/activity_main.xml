@@ -91,13 +91,6 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="?attr/colorOnPrimaryContainer" />
 
-                        <TextView
-                            android:id="@+id/tvTotalSemesters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Semesters: 0"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnPrimaryContainer" />
 
                     </LinearLayout>
 

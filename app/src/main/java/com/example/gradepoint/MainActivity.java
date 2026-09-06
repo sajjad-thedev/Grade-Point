@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements SemesterAdapter.O
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Follow the Android system dark/light theme setting
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -67,8 +72,11 @@ public class MainActivity extends AppCompatActivity implements SemesterAdapter.O
             }
         });
 
-        // 5. Observe Subjects LiveData to calculate CGPA dynamically
-        mainViewModel.getAllSubjects().observe(this, this::calculateCgpa);
+// 5. Observe Subjects LiveData to update cards & calculate CGPA dynamically
+        mainViewModel.getAllSubjects().observe(this, subjects -> {
+            adapter.setSubjects(subjects);
+            calculateCgpa(subjects);
+        });
 
         // 6. FAB click to add new semester
         fabAddSemester.setOnClickListener(v -> showAddSemesterDialog());
@@ -106,9 +114,12 @@ public class MainActivity extends AppCompatActivity implements SemesterAdapter.O
     }
 
     private void calculateCgpa(List<Subject> subjects) {
+        List<Semester> currentSemesters = mainViewModel.getAllSemesters().getValue();
+        int semesterCount = (currentSemesters != null) ? currentSemesters.size() : 0;
+
         if (subjects == null || subjects.isEmpty()) {
             tvCgpaValue.setText("0.00");
-            tvTotalCredits.setText("0 Total Credits");
+            tvTotalCredits.setText(String.format(Locale.getDefault(), "%d Semesters | 0 Credits", semesterCount));
             return;
         }
 
@@ -123,10 +134,10 @@ public class MainActivity extends AppCompatActivity implements SemesterAdapter.O
         if (totalCredits > 0) {
             double cgpa = totalGradePointsTimesCredits / totalCredits;
             tvCgpaValue.setText(String.format(Locale.getDefault(), "%.2f", cgpa));
-            tvTotalCredits.setText(String.format(Locale.getDefault(), "%d Total Credits", totalCredits));
+            tvTotalCredits.setText(String.format(Locale.getDefault(), "%d Semesters | %d Credits", semesterCount, totalCredits));
         } else {
             tvCgpaValue.setText("0.00");
-            tvTotalCredits.setText("0 Total Credits");
+            tvTotalCredits.setText(String.format(Locale.getDefault(), "%d Semesters | 0 Credits", semesterCount));
         }
     }
 }
