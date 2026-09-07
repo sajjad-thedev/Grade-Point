@@ -1,5 +1,9 @@
 # GradePoint
 
+#### Video Demo : https://youtu.be/exFyIREQnZU
+
+---
+
 GradePoint is an Android application designed to help university students track, calculate, and manage their GPAs and CGPAs. Built with Java using the MVVM architecture pattern, the app provides offline data persistence and automatic dark theme support compliant with Material Design 3 guidelines.
 
 This project was developed as a final project for Harvard's CS50.
